@@ -5,7 +5,6 @@ Handles similarity search using FAISS
 import faiss
 import numpy as np
 import pickle
-import os
 from typing import List, Tuple
 from pathlib import Path
 from app.config import settings

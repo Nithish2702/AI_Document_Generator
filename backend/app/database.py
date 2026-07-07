@@ -7,18 +7,14 @@ from sqlalchemy.orm import sessionmaker
 from app.config import settings
 
 # Create database engine
-# Support both psycopg2 and psycopg3
 database_url = settings.DATABASE_URL
 if database_url.startswith("postgresql://"):
-    # For psycopg3, use postgresql+psycopg://
-    # For psycopg2, keep postgresql://
-    # Auto-detect based on installed package
     try:
-        import psycopg  # psycopg3
+        import psycopg
         if not database_url.startswith("postgresql+psycopg://"):
             database_url = database_url.replace("postgresql://", "postgresql+psycopg://")
     except ImportError:
-        pass  # Use default (psycopg2)
+        pass
 
 engine = create_engine(
     database_url,

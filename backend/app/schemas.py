@@ -8,23 +8,14 @@ from uuid import UUID
 
 
 # Document Schemas
-class DocumentBase(BaseModel):
+class DocumentResponse(BaseModel):
+    id: UUID
     title: str
     document_type: str
-    category: Optional[str] = None
+    category: Optional[str]
     content_text: str
-    author: Optional[str] = None
-    department: Optional[str] = None
-
-
-class DocumentCreate(DocumentBase):
-    file_path: Optional[str] = None
-    file_format: Optional[str] = None
-    tags: Optional[List[str]] = []
-
-
-class DocumentResponse(DocumentBase):
-    id: UUID
+    author: Optional[str]
+    department: Optional[str]
     file_path: Optional[str]
     file_format: Optional[str]
     created_date: Optional[datetime]
@@ -73,41 +64,7 @@ class GeneratedDocumentListResponse(BaseModel):
     page_size: int
 
 
-# Feedback Schemas
-class FeedbackCreate(BaseModel):
-    rating: int = Field(..., ge=1, le=5, description="Rating from 1 to 5")
-    feedback_text: Optional[str] = None
 
-
-class FeedbackResponse(BaseModel):
-    id: int
-    document_id: UUID
-    user_id: Optional[UUID]
-    rating: int
-    feedback_text: Optional[str]
-    created_at: datetime
-    
-    class Config:
-        from_attributes = True
-
-
-# Search and Filter Schemas
-class DocumentSearchRequest(BaseModel):
-    query: Optional[str] = None
-    document_type: Optional[str] = None
-    category: Optional[str] = None
-    date_from: Optional[datetime] = None
-    date_to: Optional[datetime] = None
-    page: int = Field(default=1, ge=1)
-    page_size: int = Field(default=20, ge=1, le=100)
-
-
-# Health Check
-class HealthCheckResponse(BaseModel):
-    status: str
-    version: str
-    database: str
-    vector_store: str
 
 
 # Chat Schemas

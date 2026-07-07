@@ -4,8 +4,6 @@ Uses Google Gemini
 """
 import google.generativeai as genai
 from app.config import settings
-from typing import Optional
-import os
 
 
 class LLMService:

@@ -8,10 +8,7 @@ from typing import List
 class Settings(BaseSettings):
     """Application settings loaded from environment variables"""
     
-    # Supabase (Database + Storage)
-    SUPABASE_URL: str
-    SUPABASE_KEY: str
-    SUPABASE_BUCKET: str
+    # Supabase (Database only)
     DATABASE_URL: str
     
     # Google Gemini (LLM)
@@ -19,7 +16,6 @@ class Settings(BaseSettings):
     GEMINI_MODEL: str = "gemini-2.5-pro"
     
     # Application
-    SECRET_KEY: str
     DEBUG: bool
     
     # File Storage - Local directories
@@ -48,7 +44,7 @@ class Settings(BaseSettings):
     class Config:
         env_file = ".env"
         case_sensitive = True
-        extra = "allow"  # Allow extra fields from .env
+        extra = "allow"
 
 
 # Global settings instance

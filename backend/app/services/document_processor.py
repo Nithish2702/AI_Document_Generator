@@ -115,28 +115,7 @@ class DocumentProcessor:
         
         return metadata
     
-    @staticmethod
-    def sanitize_text(text: str) -> str:
-        """
-        Sanitize text by removing PII and sensitive information
-        
-        Args:
-            text: Input text
-            
-        Returns:
-            Sanitized text
-        """
-        # Remove email addresses
-        text = re.sub(r'\b[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Z|a-z]{2,}\b', '[EMAIL]', text)
-        
-        # Remove phone numbers (US format)
-        text = re.sub(r'\b\d{3}[-.]?\d{3}[-.]?\d{4}\b', '[PHONE]', text)
-        
-        # Remove SSN
-        text = re.sub(r'\b\d{3}-\d{2}-\d{4}\b', '[SSN]', text)
-        
-        return text
-    
+
     @staticmethod
     def validate_document(text: str) -> bool:
         """

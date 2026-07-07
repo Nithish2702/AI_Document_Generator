@@ -14,7 +14,6 @@ class EmbeddingService:
     def __init__(self):
         """Initialize the embedding model"""
         self.model = SentenceTransformer(settings.EMBEDDING_MODEL)
-        self.dimension = settings.EMBEDDING_DIMENSION
     
     def generate_embedding(self, text: str) -> np.ndarray:
         """
@@ -41,10 +40,6 @@ class EmbeddingService:
         """
         embeddings = self.model.encode(texts, convert_to_numpy=True, show_progress_bar=True)
         return embeddings
-    
-    def get_dimension(self) -> int:
-        """Get the dimension of embeddings"""
-        return self.dimension
 
 
 # Global instance

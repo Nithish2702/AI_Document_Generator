@@ -1,9 +1,8 @@
 """
 Database Models
 """
-from sqlalchemy import Column, String, Integer, Text, DateTime, Float, ARRAY, JSON, ForeignKey
+from sqlalchemy import Column, String, Integer, Text, DateTime, Float, ARRAY, JSON
 from sqlalchemy.dialects.postgresql import UUID
-from sqlalchemy.orm import relationship
 from datetime import datetime
 import uuid
 from app.database import Base
@@ -29,37 +28,9 @@ class Document(Base):
     success_rating = Column(Float)
     usage_count = Column(Integer, default=0)
     doc_metadata = Column(JSON)
-    
-    # Relationships
-    tags = relationship("DocumentTag", back_populates="document", cascade="all, delete-orphan")
-    feedback = relationship("DocumentFeedback", back_populates="document", cascade="all, delete-orphan")
 
 
-class DocumentTag(Base):
-    """Tags for documents"""
-    __tablename__ = "document_tags"
-    
-    id = Column(Integer, primary_key=True, autoincrement=True)
-    document_id = Column(UUID(as_uuid=True), ForeignKey("documents.id", ondelete="CASCADE"))
-    tag = Column(String(100), nullable=False)
-    
-    # Relationships
-    document = relationship("Document", back_populates="tags")
 
-
-class DocumentFeedback(Base):
-    """User feedback on documents"""
-    __tablename__ = "document_feedback"
-    
-    id = Column(Integer, primary_key=True, autoincrement=True)
-    document_id = Column(UUID(as_uuid=True), ForeignKey("documents.id", ondelete="CASCADE"))
-    user_id = Column(UUID(as_uuid=True))
-    rating = Column(Integer)  # 1-5
-    feedback_text = Column(Text)
-    created_at = Column(DateTime, default=datetime.utcnow)
-    
-    # Relationships
-    document = relationship("Document", back_populates="feedback")
 
 
 class GeneratedDocument(Base):

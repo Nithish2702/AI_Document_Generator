@@ -13,13 +13,10 @@ import logging
 from app.database import get_db
 from app.models import Document, GeneratedDocument
 from app.schemas import (
-    DocumentCreate,
     DocumentResponse,
     GenerateDocumentRequest,
     GeneratedDocumentResponse,
     GeneratedDocumentListResponse,
-    FeedbackCreate,
-    FeedbackResponse,
     ChatRequest,
     ChatResponse,
     AnalyzeRequest,
@@ -334,12 +331,13 @@ def get_document_preview(document_id: UUID, db: Session = Depends(get_db)):
     """
     Get document preview with structured content for rendering
     """
-    import logging
-    logger = logging.getLogger(__name__)
     
     document = db.query(GeneratedDocument).filter(GeneratedDocument.id == document_id).first()
     if not document:
+        logger.warning(f"❌ Document not found: {document_id}")
         raise HTTPException(status_code=404, detail="Document not found")
+    
+    logger.info(f"📄 Parsing preview for document: {document.title}")
     
     logger.info(f"📄 Parsing preview for document: {document.title}")
     
@@ -525,7 +523,6 @@ async def download_document(
     """
     Download a generated document in specified format
     """
-    logger.info(f"⬇️  Download requested for document: {document_id} (format: {format})")
     
     document = db.query(GeneratedDocument).filter(GeneratedDocument.id == document_id).first()
     if not document:
@@ -539,6 +536,7 @@ async def download_document(
             raise HTTPException(status_code=404, detail="File not found")
         
         logger.info(f"✅ Sending original file: {document.file_path}")
+        
         return FileResponse(
             path=document.file_path,
             filename=Path(document.file_path).name,
